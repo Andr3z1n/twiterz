@@ -1,47 +1,36 @@
 import { useState } from "react";
+import TweetCard from "./components/TweetCard";
 
-export default function TweetCard({ arquivo }) {
+export default function App() {
   const [modoEscuro, setModoEscuro] = useState(false);
 
-  const alternarTema = () => {
-    setModoEscuro(!modoEscuro);
+  const arquivo = {
+    titulo: "Minha Música",
+    tipo: "musica",
+    url: "/musica.mp3",
   };
 
   return (
     <div
       style={{
-        border: "1px solid #ccc",
-        padding: "15px",
-        marginTop: "10px",
-        borderRadius: "10px",
-        backgroundColor: modoEscuro ? "#1e1e1e" : "#ffffff",
+        minHeight: "100vh",
+        padding: "20px",
+        backgroundColor: modoEscuro ? "#121212" : "#ffffff",
         color: modoEscuro ? "#ffffff" : "#000000",
       }}
     >
       <button
-        onClick={alternarTema}
+        onClick={() => setModoEscuro(!modoEscuro)}
         style={{
-          padding: "8px 12px",
-          marginBottom: "10px",
-          border: "none",
-          borderRadius: "5px",
+          padding: "10px",
+          marginBottom: "20px",
           cursor: "pointer",
-          backgroundColor: modoEscuro ? "#ffffff" : "#333333",
-          color: modoEscuro ? "#000000" : "#ffffff",
         }}
       >
         {modoEscuro ? "☀️ Modo Claro" : "🌙 Modo Escuro"}
       </button>
 
-      <h3>{arquivo.titulo}</h3>
-
-      {arquivo.tipo === "video" && (
-        <video src={arquivo.url} controls width="400" />
-      )}
-
-      {arquivo.tipo === "musica" && (
-        <audio src={arquivo.url} controls />
-      )}
+      <TweetCard arquivo={arquivo} />
     </div>
   );
 }
