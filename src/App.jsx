@@ -1,64 +1,47 @@
 import { useState } from "react";
-import TweetCard from "./components/TweetCard";
-import "./index.css";
 
-export default function App() {
-  const [listaArquivos, setListaArquivos] = useState([]);
+export default function TweetCard({ arquivo }) {
+  const [modoEscuro, setModoEscuro] = useState(false);
 
-  function selecionarArquivo(event) {
-    const file = event.target.files[0];
-
-    if (!file) return;
-
-    const novoArquivo = {
-      id: Date.now(),
-      titulo: file.name,
-      tipo: file.type.startsWith("video")
-        ? "video"
-        : file.type.startsWith("audio")
-        ? "musica"
-        : "outro",
-      url: URL.createObjectURL(file),
-    };
-
-    setListaArquivos((arquivos) => [
-      novoArquivo,
-      ...arquivos,
-    ]);
-  }
+  const alternarTema = () => {
+    setModoEscuro(!modoEscuro);
+  };
 
   return (
-    <div className="app">
-      <aside className="sidebar">
-        <h1>🐦 Twitter 2</h1>
-      </aside>
+    <div
+      style={{
+        border: "1px solid #ccc",
+        padding: "15px",
+        marginTop: "10px",
+        borderRadius: "10px",
+        backgroundColor: modoEscuro ? "#1e1e1e" : "#ffffff",
+        color: modoEscuro ? "#ffffff" : "#000000",
+      }}
+    >
+      <button
+        onClick={alternarTema}
+        style={{
+          padding: "8px 12px",
+          marginBottom: "10px",
+          border: "none",
+          borderRadius: "5px",
+          cursor: "pointer",
+          backgroundColor: modoEscuro ? "#ffffff" : "#333333",
+          color: modoEscuro ? "#000000" : "#ffffff",
+        }}
+      >
+        {modoEscuro ? "☀️ Modo Claro" : "🌙 Modo Escuro"}
+      </button>
 
-      <main className="feed">
-        <h2>Página Inicial</h2>
+      <h3>{arquivo.titulo}</h3>
 
-        <button
-          onClick={() =>
-            document.getElementById("arquivo").click()
-          }
-        >
-          Escolher vídeo ou música
-        </button>
+      {arquivo.tipo === "video" && (
+        <video src={arquivo.url} controls width="400" />
+      )}
 
-        <input
-          id="arquivo"
-          type="file"
-          accept="video/*,audio/*"
-          style={{ display: "none" }}
-          onChange={selecionarArquivo}
-        />
-
-        {listaArquivos.map((arquivo) => (
-          <TweetCard
-            key={arquivo.id}
-            arquivo={arquivo}
-          />
-        ))}
-      </main>
+      {arquivo.tipo === "musica" && (
+        <audio src={arquivo.url} controls />
+      )}
     </div>
   );
 }
