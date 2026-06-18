@@ -91,7 +91,9 @@ export default function MusicUpload({ onUploadSuccess, modoEscuro }) {
 
       if (storageError) throw storageError
 
-      const { data: urlData } = supabase.storage.from(bucketDestino).getPublicUrl(nomeArquivoClean)
+    const { data: urlData } = supabase.storage
+  .from(bucketDestino)
+  .getPublicUrl(nomeArquivoLimpo)
 
       if (bucketDestino === 'album-covers') {
         dadosParaSalvar.cover_url = urlData.publicUrl
